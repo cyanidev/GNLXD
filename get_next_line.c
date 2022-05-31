@@ -16,37 +16,106 @@
 # define BUFFSIZE 100
 #endif
 
-char	*ft_read(int fd, nosetodavia)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char	str1[BUFFSIZE + 1];
-	char	*temp;
-	char	*newstr;
-	ssize_t	retval;
-	static	char *remainder;
-	char	*aux;
+	char	*snew;
+	size_t	i;
+	size_t	j;
+	size_t	len;
 
-	temp = "";
-	retval = read(fd, str1, BUFFSIZE);
-	while (retval != 0)
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
+	len = strlen(s1) + strlen(s2) + 1;
+	snew = malloc(sizeof(char) * (len + 1));
+	if (snew == NULL)
+		return (NULL);
+	i = 0;
+	while (i < strlen(s1))
 	{
-		if (ft_strchr(str1, '\n'))
-		{
-			if (*(ft_strchr(str1, '\n') + 1) != '\0')
-			{
-				aux = ft_strchr(str1, '\n') + 1;
-				remainder = ft_strdup(aux);
-				returnn (strndup(str1, aux - str1));
-			}
-		}
+		snew[i] = s1[i];
+		i++;
 	}
-	newstr = strjoin(str1, temp);
+	j = 0;
+	while (j < strlen(s2))
+	{
+		snew[i + j] = s2[j];
+		j++;
+	}
+	snew[i + j] = '\0';
+	return (snew);
 }
 
 char	*get_next_line(int fd)
 {
+	ssize_t	retval;
+	char	buff[BUFFSIZE + 1];
+	static	char *save = "";
+	char	*tmp;
+	size_t	size;
+	char	*print;
+	size_t	move;
 
+	retval = 1;
+	while (retval != 0 && strchr(save,'\n') == NULL)
+	{
+		retval = read(fd, buff, BUFFSIZE);
+		if (retval == -1)
+		{
+			if (strlen(save) > 0)
+			{
+				free(save);
+				save = "";
+			}
+				return(NULL);
+		}
+		buff[retval] = '\0';
+		tmp = ft_strjoin(save, buff);
+		if (tmp == 0)
+		{
+			free(save);
+			save = "";
+			return (NULL);
+		}
+		if (strlen(save) > 0)
+			free(save);
+		save = tmp;
+	}
+	size = strchr(save,'\n') - &save[0];//y si no hay '\n'? 
+	print = malloc(sizeof(char *) * (size + 2));
+	if (print == NULL)
+	{
+		if (strlen(save) == 0)
+			free (save);
+		save = "";
+		return (NULL);
+	}
+	memcpy(print, save, size);
+	print[size] = '\0';
+	move = strlen(save) - strlen(print);
+	memmove(&save[0],&save[strlen(print) + 1], move);
+	if (strlen(save) == 0)
+	{
+		free(save);
+		save = "";
+		return (NULL);
+	}
+	if (strlen(print) == 0)
+	{
+		free(print);
+		return (NULL);
+	}
+	return (print);
 }
-/*la_cantidad_que_consegui_leer = read(archivo, lugar_donde_guardo_lo_que_leo, la_cantidad_que_quiero_leer);
+
+
+/*int	main(void)
+{
+	int	txt;
+	txt = open("", O_RDONLY);
+
+	for (int i = 0; i < 5; i++)
+		puts(get_next_line(txt));
+}*/
 
 /*#include <fcntl.h>
 int open(const char *pathname, int flags);
