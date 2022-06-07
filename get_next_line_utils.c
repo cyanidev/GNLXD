@@ -36,13 +36,13 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (snew == NULL)
 		return (NULL);
 	i = 0;
-	while (i < ft_strlen(s1))
+	while (i < strlen(s1))
 	{
 		snew[i] = s1[i];
 		i++;
 	}
 	j = 0;
-	while (j < ft_strlen(s2))
+	while (j < strlen(s2))
 	{
 		snew[i + j] = s2[j];
 		j++;
@@ -69,3 +69,34 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
+char	*ft_strdup(const char *s)
+{
+	int		j;
+	char	*dest;
+
+	dest = malloc(sizeof(char) * (strlen(s) + 1));
+	if (!(dest))
+		return (NULL);
+	j = 0;
+	while (s[j])
+	{
+		dest[j] = s[j];
+		j++;
+	}
+	dest[j] = '\0';
+	return (dest);
+}
+
+void	ft_free(char *str, char **str2, char **str3)
+{
+	if (str)
+		free(str);
+	if (*str2)
+	{
+		free(*str2);
+		*str2 = NULL;
+	}
+	if (*str3)
+		free(*str);
+	return (NULL);
+}
