@@ -16,103 +16,89 @@
 # define BUFFSIZE 100
 #endif
 
-char	*ft_strjoin(char const *s1, char const *s2)
+void	ft_read(int fd, char **save, char **tmp)
 {
-	char	*snew;
-	size_t	i;
-	size_t	j;
-	size_t	len;
+	char	*buf;
+	ssize_t	retval;
 
-	if (s1 == NULL || s2 == NULL)
+	buf = malloc(sizeof (char) * BUFFSIZE + 1);
+	if (buf == NULL)
 		return (NULL);
-	len = strlen(s1) + strlen(s2) + 1;
-	snew = malloc(sizeof(char) * (len + 1));
-	if (snew == NULL)
-		return (NULL);
-	i = 0;
-	while (i < strlen(s1))
+	retval = 1;
+	while (retval > 0)
 	{
-		snew[i] = s1[i];
-		i++;
+		retval = read(fd, buf, BUFFSIZE);
+		if (retval == -1)
+		{
+			ft_free(buf, *save, *tmp);
+			return (NULL);
+		}
+		buf[retval] = '\0';
+		*tmp = ft_strdup(*save);
+		free(save);
+		*save = ft_strjoin(*tmp, buf);
+		free(tmp);
+		if (strchr(*save, '/n') != '\0')
+			break ;
 	}
-	j = 0;
-	while (j < strlen(s2))
+}
+
+char	*iminus(char	**save)
+{
+	char	*str;
+	size_t	i;
+	char	*print;
+
+	str = ft_strdup(*save);
+	i = strch(str, '\n') - strlen(str);
+	while (str[i != 0])
 	{
-		snew[i + j] = s2[j];
-		j++;
+		print = str;
+		i--;
 	}
-	snew[i + j] = '\0';
-	return (snew);
+	return (print);
+}
+
+char	*ft_splitn(char **save)
+{
+	char	*print;
+
+	print = iminus(**save);
+	*save = iplus(**save);
+
+	return (print);
 }
 
 char	*get_next_line(int fd)
 {
-	ssize_t	retval;
-	char	buff[BUFFSIZE + 1];
-	static	char *save = "";
-	char	*tmp;
-	size_t	size;
-	char	*print;
-	size_t	move;
+	static char	*save = NULL;
+	char		*print;
+	char		*tmp;
 
-	retval = 1;
-	while (retval != 0 && strchr(save,'\n') == NULL)
+	print = NULL;
+	tmp = NULL;
+	if (fd < 0 || BUFFSIZE < 0)
+		return (NULL);
+	ft_read(fd, &save, &tmp);
+	while (strlen(save) > 0)
 	{
-		retval = read(fd, buff, BUFFSIZE);
-		if (retval == -1)
-		{
-			if (strlen(save) > 0)
-			{
-				free(save);
-				save = "";
-			}
-				return(NULL);
-		}
-		buff[retval] = '\0';
-		tmp = ft_strjoin(save, buff);
-		if (tmp == 0)
-		{
-			free(save);
-			save = "";
-			return (NULL);
-		}
-		if (strlen(save) > 0)
-			free(save);
-		save = tmp;
+		print = ft_splitn(&save);
 	}
-	size = strchr(save,'\n') - &save[0];//y si no hay '\n'? 
-	print = malloc(sizeof(char *) * (size + 2));
 	if (print == NULL)
 	{
-		if (strlen(save) == 0)
-			free (save);
-		save = "";
-		return (NULL);
-	}
-	memcpy(print, save, size);
-	print[size] = '\0';
-	move = strlen(save) - strlen(print);
-	memmove(&save[0],&save[strlen(print) + 1], move);
-	if (strlen(save) == 0)
-	{
 		free(save);
-		save = "";
-		return (NULL);
-	}
-	if (strlen(print) == 0)
-	{
+		save = NULL;
 		free(print);
+		free(tmp);
 		return (NULL);
 	}
 	return (print);
 }
 
-
 /*int	main(void)
 {
 	int	txt;
-	txt = open("", O_RDONLY);
-
+	txt = open("input.txt", O_RDONLY);
 	for (int i = 0; i < 5; i++)
 		puts(get_next_line(txt));
 }*/
