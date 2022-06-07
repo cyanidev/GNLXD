@@ -16,9 +16,15 @@
 # include <stdio.h> //print
 # include <stdlib.h> //malloc
 # include <string.h> 
+# include <unistd.h> // read
+# include <fcntl.h>
 
 char	*get_next_line(int fd);
+void	ft_read(int fd, char **save, char **tmp);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strjoin(char const *s1, char const *s2);
+size_t	ft_strlen(const char *str);
+void	ft_free(char *str, char **str2, char **str3);
+char	*ft_splitn(char **save);
 
 #endif 
