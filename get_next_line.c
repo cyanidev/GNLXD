@@ -12,8 +12,8 @@
 
 #include "get_next_line.h"
 
-#ifndef BUFFSIZE
-# define BUFFSIZE 100
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 100
 #endif
 
 void	ft_read(int fd, char **save, char **tmp)
@@ -21,13 +21,13 @@ void	ft_read(int fd, char **save, char **tmp)
 	char	*buf;
 	ssize_t	retval;
 
-	buf = malloc(sizeof (char) * BUFFSIZE + 1);
+	buf = malloc(sizeof (char) * BUFFER_SIZE + 1);
 	if (buf == NULL)
 		return (NULL);
 	retval = 1;
 	while (retval > 0)
 	{
-		retval = read(fd, buf, BUFFSIZE);
+		retval = read(fd, buf, BUFFER_SIZE);
 		if (retval == -1)
 		{
 			ft_free(buf, *save, *tmp);
@@ -77,7 +77,7 @@ char	*get_next_line(int fd)
 
 	print = NULL;
 	tmp = NULL;
-	if (fd < 0 || BUFFSIZE < 0)
+	if (fd < 0 || BUFFER_SIZE < 0)
 		return (NULL);
 	ft_read(fd, &save, &tmp);
 	while (strlen(save) > 0)
