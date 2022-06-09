@@ -117,19 +117,10 @@ char	*get_next_line(int fd)
 	return (print);
 }
 
-int	main(void)
+/*int	main(void)
 {
 	int txt;
 	txt = open("input.txt", O_RDONLY);
-	for (int i = 0; i < 5; i++)
-		puts(get_next_line(txt));
-}
-
-/*int	main(void)
-{
-	int	txt;
-	txt = open("", O_RDONLY);
-
 	for (int i = 0; i < 5; i++)
 		puts(get_next_line(txt));
 }*/
