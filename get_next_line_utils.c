@@ -16,6 +16,8 @@ size_t	ft_strlen(const char *str)
 {
 	size_t	i;
 
+	if(str == NULL)
+		return(0);
 	i = 0;
 	while (str[i] != '\0')
 		i++;
@@ -29,20 +31,20 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size_t	j;
 	size_t	len;
 
-	if (s1 == NULL || s2 == NULL)
+	if (s1 == NULL && s2 == NULL)
 		return (NULL);
 	len = ft_strlen(s1) + ft_strlen(s2) + 1;
 	snew = malloc(sizeof(char) * (len + 1));
 	if (snew == NULL)
 		return (NULL);
 	i = 0;
-	while (i < strlen(s1))
+	while (i < ft_strlen(s1))
 	{
 		snew[i] = s1[i];
 		i++;
 	}
 	j = 0;
-	while (j < strlen(s2))
+	while (j < ft_strlen(s2))
 	{
 		snew[i + j] = s2[j];
 		j++;
@@ -74,7 +76,9 @@ char	*ft_strdup(const char *s)
 	int		j;
 	char	*dest;
 
-	dest = malloc(sizeof(char) * (strlen(s) + 1));
+	if(s == NULL)
+		return ("");
+	dest = malloc(sizeof(char) * (ft_strlen(s) + 1));
 	if (!(dest))
 		return (NULL);
 	j = 0;
@@ -87,16 +91,20 @@ char	*ft_strdup(const char *s)
 	return (dest);
 }
 
-void	ft_free(char *str, char **str2, char **str3)
+void	ft_free(char **str, char **str2, char **str3)
 {
-	if (str)
-		free(str);
-	if (*str2)
+	if (str && *str)
+	{
+		free(*str);
+		*str = NULL;
+	}
+	if (str2 && *str2)
 	{
 		free(*str2);
 		*str2 = NULL;
 	}
-	if (*str3)
-		free(*str);
-	return (NULL);
-}
+	if (str3 && *str3)
+	{
+		free(*str3);
+		*str3 = NULL;
+	}
