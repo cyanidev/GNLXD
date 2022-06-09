@@ -19,53 +19,75 @@
 void	ft_read(int fd, char **save, char **tmp)
 {
 	char	*buf;
-	ssize_t	retval;
+	ssize_t retval;
 
 	buf = malloc(sizeof (char) * BUFFER_SIZE + 1);
 	if (buf == NULL)
-		return (NULL);
+		return ;
 	retval = 1;
 	while (retval > 0)
 	{
 		retval = read(fd, buf, BUFFER_SIZE);
 		if (retval == -1)
 		{
-			ft_free(buf, *save, *tmp);
-			return (NULL);
+			ft_free(&buf, save, tmp);
+			return ;
 		}
 		buf[retval] = '\0';
 		*tmp = ft_strdup(*save);
-		free(save);
+		ft_free(0, save, 0);
 		*save = ft_strjoin(*tmp, buf);
-		free(tmp);
-		if (strchr(*save, '/n') != '\0')
+		ft_free(0, 0, tmp);
+		if (ft_strchr(*save, '\n') != '\0')
 			break ;
 	}
+	ft_free(&buf, 0, 0);
 }
 
-char	*iminus(char	**save)
+char	*ft_saving(char *tmp)
 {
-	char	*str;
+	char	*save;
 	size_t	i;
-	char	*print;
 
-	str = ft_strdup(*save);
-	i = strch(str, '\n') - strlen(str);
-	while (str[i != 0])
+	i = 0;
+	if (ft_strchr(tmp, '\0') == NULL)
+		return (NULL);
+	while (tmp[i] != '\n')
+		i++;
+	save = calloc((ft_strlen(tmp) - i) + 2, sizeof(char));
+	if (save == NULL)
+		return (NULL);
+	i = i + 2;
+	while (tmp[i] != '\0')
 	{
-		print = str;
-		i--;
+		save[0] = tmp[i];
+		i++;
+		save++;
 	}
-	return (print);
+	return (save);
 }
 
-char	*ft_splitn(char **save)
+char	*ft_splitn(char **save, char **tmp)
 {
 	char	*print;
+	size_t	i;
 
-	print = iminus(**save);
-	*save = iplus(**save);
-
+	i = 0;
+	*tmp = ft_strdup(*save);
+	ft_free(0, save, 0);
+	while(tmp[i] != '\n' && tmp[i] != '\0')
+		i++;
+	print = calloc(i + 2, sizeof(char));
+	if (print == NULL)
+		return (NULL);
+	i = 0;
+	while (tmp[i - 1] != '\n' && tmp[i] != '\0')
+	{
+		print[i] = tmp[i];
+		i++;
+	}
+	*save = ft_saving(*tmp);
+	ft_free(0, 0, tmp);
 	return (print);
 }
 
@@ -77,12 +99,12 @@ char	*get_next_line(int fd)
 
 	print = NULL;
 	tmp = NULL;
-	if (fd < 0 || BUFFER_SIZE < 0)
+	if (fd <= 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	ft_read(fd, &save, &tmp);
-	while (strlen(save) > 0)
+	if (strlen(save) > 0)
 	{
-		print = ft_splitn(&save);
+		print = ft_splitn(&save, &tmp);
 	}
 	if (print == NULL)
 	{
@@ -95,21 +117,19 @@ char	*get_next_line(int fd)
 	return (print);
 }
 
-/*int	main(void)
+int	main(void)
 {
-	int	txt;
+	int txt;
 	txt = open("input.txt", O_RDONLY);
 	for (int i = 0; i < 5; i++)
 		puts(get_next_line(txt));
+}
+
+/*int	main(void)
+{
+	int	txt;
+	txt = open("", O_RDONLY);
+
+	for (int i = 0; i < 5; i++)
+		puts(get_next_line(txt));
 }*/
-
-/*#include <fcntl.h>
-int open(const char *pathname, int flags);
-The argument flags must include one of the following access
-       modes: O_RDONLY, O_WRONLY, or O_RDWR.  These request opening the
-       file read-only, write-only, or read/write, respectively.
-
-llamar a read cada vez que no encuentres un salto y no llegue a EOF
-
-hay que llamar a read tantas veces necesite el buffer*/
-
