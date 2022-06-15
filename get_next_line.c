@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   getnextline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelicia <afelicia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/28 17:54:03 by afelicia          #+#    #+#             */
-/*   Updated: 2022/05/27 23:02:49 by afelicia         ###   ########.fr       */
+/*   Created: 2022/05/20 15:23:53 by marvin            #+#    #+#             */
+/*   Updated: 2022/05/20 15:23:53 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	ft_read(int fd, char **save, char **tmp)
 		*tmp = ft_strdup(*save);
 		ft_free(0, save, 0);
 		*save = ft_strjoin(*tmp, buf);
-		ft_free(0, 0, tmp);
-		if (ft_strchr(*save, '\n') != '\0')
+		ft_free(tmp, 0, 0);
+		if (ft_strchr(*save, '\n'))
 			break ;
 	}
 	ft_free(&buf, 0, 0);
@@ -48,21 +48,23 @@ char	*ft_saving(char *tmp)
 {
 	char	*save;
 	size_t	i;
+	size_t	j;
 
 	i = 0;
-	if (ft_strchr(tmp, '\0') == NULL)
+	if (!(ft_strchr(tmp, '\n')))
 		return (NULL);
 	while (tmp[i] != '\n')
 		i++;
-	save = calloc((ft_strlen(tmp) - i) + 2, sizeof(char));
+	save = calloc((ft_strlen(tmp) - i) + 1, sizeof(char));
 	if (save == NULL)
 		return (NULL);
-	i = i + 2;
+	i = i + 1;
+	j = 0;
 	while (tmp[i] != '\0')
 	{
-		save[0] = tmp[i];
+		save[j] = tmp[i];
 		i++;
-		save++;
+		j++;
 	}
 	return (save);
 }
@@ -71,21 +73,26 @@ char	*ft_splitn(char **save, char **tmp)
 {
 	char	*print;
 	size_t	i;
+	char	*str;
 
 	i = 0;
 	*tmp = ft_strdup(*save);
 	ft_free(0, save, 0);
-	while(tmp[i] != '\n' && tmp[i] != '\0')
+	str = ft_strdup(*tmp);
+	while(str[i] != '\n' && str[i] != '\0')
 		i++;
 	print = calloc(i + 2, sizeof(char));
 	if (print == NULL)
 		return (NULL);
 	i = 0;
-	while (tmp[i - 1] != '\n' && tmp[i] != '\0')
+	while (str[i] != '\n' && str[i] != '\0')
 	{
-		print[i] = tmp[i];
+		print[i] = str[i];
 		i++;
+		if (ft_strchr(*save, '\n'))
+			break ;
 	}
+	print[i] = str[i];
 	*save = ft_saving(*tmp);
 	ft_free(0, 0, tmp);
 	return (print);
@@ -99,28 +106,25 @@ char	*get_next_line(int fd)
 
 	print = NULL;
 	tmp = NULL;
-	if (fd <= 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	ft_read(fd, &save, &tmp);
-	if (strlen(save) > 0)
+	if (*save != '\0')
 	{
 		print = ft_splitn(&save, &tmp);
 	}
 	if (print == NULL)
 	{
-		free(save);
-		save = NULL;
-		free(print);
-		free(tmp);
+		ft_free(&save, &print, &tmp);
 		return (NULL);
 	}
 	return (print);
 }
 
-/*int	main(void)
+int main(void)
 {
 	int txt;
-	txt = open("input.txt", O_RDONLY);
-	for (int i = 0; i < 5; i++)
+	txt = open("imput.txt", O_RDONLY);
+	for (int i = 0; i < 2; i++)
 		puts(get_next_line(txt));
-}*/
+}
