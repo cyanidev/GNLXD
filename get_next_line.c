@@ -13,7 +13,7 @@
 #include "get_next_line.h"
 
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 100
+# define BUFFER_SIZE 1
 #endif
 
 void	ft_read(int fd, char **save, char **tmp)
@@ -38,7 +38,7 @@ void	ft_read(int fd, char **save, char **tmp)
 		ft_free(0, save, 0);
 		*save = ft_strjoin(*tmp, buf);
 		ft_free(tmp, 0, 0);
-		if (ft_strchr(*save, '\n'))
+		if (ft_strchr(*save, '\n')) // poner aqui buf y separar la copia a otro lado :3
 			break ;
 	}
 	ft_free(&buf, 0, 0);
@@ -89,7 +89,7 @@ char	*ft_splitn(char **save, char **tmp)
 	{
 		print[i] = str[i];
 		i++;
-		if (ft_strchr(*save, '\n'))
+		if (str[i] == '\n')
 			break ;
 	}
 	print[i] = str[i];
@@ -125,6 +125,6 @@ int main(void)
 {
 	int txt;
 	txt = open("imput.txt", O_RDONLY);
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 1; i++)
 		puts(get_next_line(txt));
 }
