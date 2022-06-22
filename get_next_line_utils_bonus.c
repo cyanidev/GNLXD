@@ -6,7 +6,7 @@
 /*   By: afelicia <afelicia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 11:02:50 by afelicia          #+#    #+#             */
-/*   Updated: 2022/06/22 11:51:37 by afelicia         ###   ########.fr       */
+/*   Updated: 2022/06/22 18:21:32 by afelicia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,17 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 char	*ft_strchr(char *str, int c)
 {
-	while (*str)
+	int	i;
+
+	i = 0;
+	while (str[i])
 	{
-		if (*str == c)
-			return ((char *)str);
+		if (str[i] == c)
+			return (&str[i]);
 		str++;
 	}
 	if (c == '\0')
-		return ((char *)str);
+		return (&str[i]);
 	return (0);
 }
 
@@ -85,12 +88,12 @@ void	ft_free(char **str, char **str2, char **str3)
 		free(*str);
 		*str = NULL;
 	}
-	if ((str != NULL) && (*str != NULL))
+	if ((str2 != NULL) && (*str2 != NULL))
 	{
 		free(*str2);
 		*str2 = NULL;
 	}
-	if ((str != NULL) && (*str != NULL))
+	if ((str3 != NULL) && (*str3 != NULL))
 	{
 		free(*str3);
 		*str3 = NULL;

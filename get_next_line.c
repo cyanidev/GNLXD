@@ -6,7 +6,7 @@
 /*   By: afelicia <afelicia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 17:54:03 by afelicia          #+#    #+#             */
-/*   Updated: 2022/06/22 11:52:17 by afelicia         ###   ########.fr       */
+/*   Updated: 2022/06/22 17:46:41 by afelicia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char	*ft_splitn(char **save, char **tmp)
 	}
 	print[i] = str[i];
 	*save = ft_saving(*tmp);
-	ft_free(0, 0, tmp);
+	ft_free(0, &str, tmp);
 	return (print);
 }
 
@@ -116,3 +116,25 @@ char	*get_next_line(int fd)
 	}
 	return (print);
 }
+
+/*void	ft_exit(void)
+{
+	system("leaks -q a.out");
+}
+
+int	main(void)
+{
+	int	fd;
+	char	*a;
+
+	atexit(ft_exit);
+	fd = open("input.txt", O_RDONLY);
+	a = get_next_line(fd);
+	while (a != NULL)
+	{
+		puts (a);
+		ft_free(&a, 0, 0);
+		a = get_next_line(fd);
+	}
+	ft_free(&a, 0, 0);
+}*/

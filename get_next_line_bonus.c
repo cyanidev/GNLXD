@@ -6,7 +6,7 @@
 /*   By: afelicia <afelicia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 11:02:59 by afelicia          #+#    #+#             */
-/*   Updated: 2022/06/22 12:41:59 by afelicia         ###   ########.fr       */
+/*   Updated: 2022/06/22 18:26:11 by afelicia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,19 +90,19 @@ char	*ft_splitn(char **save, char **tmp)
 	}
 	print[i] = str[i];
 	*save = ft_saving(*tmp);
-	ft_free(0, 0, tmp);
+	ft_free(0, &str, tmp);
 	return (print);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*save[1023] = {NULL};
+	static char	*save[1024] = {NULL};
 	char		*print;
 	char		*tmp;
 
 	print = NULL;
 	tmp = NULL;
-	if (fd < 0 || fd >= 1024 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd > 1024 || BUFFER_SIZE <= 0)
 		return (NULL);
 	ft_read(fd, &save[fd], &tmp);
 	if (save[fd] != NULL && *save[fd] != '\0')
@@ -116,3 +116,45 @@ char	*get_next_line(int fd)
 	}
 	return (print);
 }
+
+/*void	ft_exit(void)
+{
+	system("leaks -q a.out");
+}
+
+int	main(void)
+{
+	int fd[4];
+	char *a;
+	char *b;
+	char *c;
+
+	atexit(ft_exit);
+	fd[1] = open("input.txt", O_RDONLY);
+	fd[2] = open("input1.txt", O_RDONLY);
+	fd[3] = open("input2.txt", O_RDONLY);
+	a = get_next_line(fd[1]);
+	b = get_next_line(fd[2]);
+	c = get_next_line(fd[3]);
+	while (a || b || c)
+	{
+		if (a)
+		{
+			puts(a);
+			ft_free(&a, 0 ,0);
+		}
+		if (b)
+		{
+			puts(b);
+			ft_free(&b, 0, 0);
+		}
+		if (c)
+		{
+			puts(c);
+			ft_free(&c, 0, 0);
+		}
+		a = get_next_line(fd[1]);
+		b = get_next_line(fd[2]);
+		c = get_next_line(fd[3]);
+	}
+}*/

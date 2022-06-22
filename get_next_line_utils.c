@@ -6,7 +6,7 @@
 /*   By: afelicia <afelicia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 17:55:58 by afelicia          #+#    #+#             */
-/*   Updated: 2022/06/22 11:04:10 by afelicia         ###   ########.fr       */
+/*   Updated: 2022/06/22 17:27:03 by afelicia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ size_t	ft_strlen(const char *str)
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*snew;
-	size_t	i;
-	size_t	j;
+	ssize_t	i;
+	ssize_t	j;
 	size_t	len;
 
 	if (s1 == NULL && s2 == NULL)
@@ -48,14 +48,17 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 char	*ft_strchr(char *str, int c)
 {
-	while (*str)
+	int	i;
+
+	i = 0;
+	while (str[i])
 	{
-		if (*str == c)
-			return ((char *)str);
-		str++;
+		if (str[i] == c)
+			return (&str[i]);
+		i++;
 	}
 	if (c == '\0')
-		return ((char *)str);
+		return (&str[i]);
 	return (0);
 }
 
@@ -85,12 +88,12 @@ void	ft_free(char **str, char **str2, char **str3)
 		free(*str);
 		*str = NULL;
 	}
-	if ((str != NULL) && (*str != NULL))
+	if ((str2 != NULL) && (*str2 != NULL))
 	{
 		free(*str2);
 		*str2 = NULL;
 	}
-	if ((str != NULL) && (*str != NULL))
+	if ((str3 != NULL) && (*str3 != NULL))
 	{
 		free(*str3);
 		*str3 = NULL;
