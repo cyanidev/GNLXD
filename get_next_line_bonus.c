@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afelicia <afelicia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/28 17:54:03 by afelicia          #+#    #+#             */
-/*   Updated: 2022/06/22 11:52:17 by afelicia         ###   ########.fr       */
+/*   Created: 2022/06/22 11:02:59 by afelicia          #+#    #+#             */
+/*   Updated: 2022/06/22 12:41:59 by afelicia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 void	ft_read(int fd, char **save, char **tmp)
 {
@@ -96,22 +96,22 @@ char	*ft_splitn(char **save, char **tmp)
 
 char	*get_next_line(int fd)
 {
-	static char	*save = NULL;
+	static char	*save[1023] = {NULL};
 	char		*print;
 	char		*tmp;
 
 	print = NULL;
 	tmp = NULL;
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd >= 1024 || BUFFER_SIZE <= 0)
 		return (NULL);
-	ft_read(fd, &save, &tmp);
-	if (save != NULL && *save != '\0')
+	ft_read(fd, &save[fd], &tmp);
+	if (save[fd] != NULL && *save[fd] != '\0')
 	{
-		print = ft_splitn(&save, &tmp);
+		print = ft_splitn(&save[fd], &tmp);
 	}
 	if (print == NULL)
 	{
-		ft_free(&save, &print, &tmp);
+		ft_free(&save[fd], &print, &tmp);
 		return (NULL);
 	}
 	return (print);

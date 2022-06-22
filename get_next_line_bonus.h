@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afelicia <afelicia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/28 17:55:17 by afelicia          #+#    #+#             */
-/*   Updated: 2022/06/22 13:30:04 by afelicia         ###   ########.fr       */
+/*   Created: 2022/06/22 11:02:56 by afelicia          #+#    #+#             */
+/*   Updated: 2022/06/22 11:51:28 by afelicia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 # include <stddef.h>
 # include <stdio.h> //print
 # include <stdlib.h> //malloc
